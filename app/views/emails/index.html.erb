@@ -1,0 +1,168 @@
+<div class="container">
+    <div class="row">
+        <div class="col-sm-3 col-md-2">
+            <div class="btn-group">
+                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                    Mail
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a href="#">Mail</a></li>
+                    <li><a href="/todolist">Tasks</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="col-sm-9 col-md-10">
+            <!-- Split button -->
+            <div class="btn-group">
+                <button type="button" class="btn btn-default">
+                    <div class="checkbox" style="margin: 0;">
+                        <label>
+                            <input type="checkbox">
+                        </label>
+                    </div>
+                </button>
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                    <span class="sr-only">Toggle Dropdown</span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a href="#">All</a></li>
+                    <li><a href="#">None</a></li>
+                    <li><a href="#">Read</a></li>
+                    <li><a href="#">Unread</a></li>
+                    <li><a href="#">Starred</a></li>
+                    <li><a href="#">Unstarred</a></li>
+                </ul>
+            </div>
+            <button type="button" class="btn btn-default" data-toggle="tooltip" title="Refresh">
+                   <span class="glyphicon glyphicon-refresh"></span>   </button>
+            <!-- Single button -->
+            <div class="btn-group">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                    More
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a href="#">Mark all as read</a></li>
+                    <li class="divider"></li>
+                    <li class="text-center"><small class="text-muted">Select messages to see more actions</small></li>
+                </ul>
+            </div>
+            <div class="pull-right">
+                <span class="text-muted"><b>1</b>–<b>50</b> of <b>277</b></span>
+                <div class="btn-group btn-group-sm">
+                    <button type="button" class="btn btn-default">
+                        <span class="glyphicon glyphicon-chevron-left"></span>
+                    </button>
+                    <button type="button" class="btn btn-default">
+                        <span class="glyphicon glyphicon-chevron-right"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-sm-3 col-md-2">
+            <a href="#" class="btn btn-danger btn-sm btn-block" role="button">COMPOSE</a>
+            <hr />
+            <ul class="nav nav-pills nav-stacked">
+                <li class="active"><a href="#"><span class="badge pull-right">42</span> Inbox </a>
+                </li>
+                <li><a href="#">Starred</a></li>
+                <li><a href="#">Important</a></li>
+                <li><a href="#">Sent Mail</a></li>
+                <li><a href="#"><span class="badge pull-right">3</span>Drafts</a></li>
+            </ul>
+        </div>
+        <div class="col-sm-9 col-md-10">
+            <!-- Nav tabs -->
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#home" data-toggle="tab"><span class="glyphicon glyphicon-inbox">
+                </span>Primary</a></li>
+                <li><a href="#profile" data-toggle="tab"><span class="glyphicon glyphicon-user"></span>
+                    Social</a></li>
+                <li><a href="#messages" data-toggle="tab"><span class="glyphicon glyphicon-tags"></span>
+                    Promotions</a></li>
+                <li><a href="#settings" data-toggle="tab"><span class="glyphicon glyphicon-plus no-margin">
+                </span></a></li>
+            </ul>
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div class="tab-pane fade in active" id="home">
+                    <div class="list-group" style="width: 300px;">
+                    	<% @emails.each do |email| %> 
+                    	<a href="#" class="list-group-item">
+                        	<div class="checkbox">
+                        		<span class="glyphicon glyphicon-star-empty" data-selected="true" data-label-id="0"></span>
+                        		<span class="name" style="min-width: 120px;
+                                display: inline-block;"><%= email.object %></span>
+                                <label>
+                                    <input type="checkbox">
+                                </label>
+                            </div>
+                            <span class="">This is big title</span>
+                            <span class="badge" data-hover="null">12:10 AM</span> 
+                            <span class="pull-right" data-hover="null">
+                            	<span class="glyphicon glyphicon-paperclip" data-hover="null"></span>
+                            </span>
+                    	</a>
+                    	<% end %>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+	<div class="row">
+		<div class="col-lg-offset-2 col-lg-2">
+			
+			<table class="table table-striped">
+				<tr>
+
+					<th>Email object</th>
+
+				</tr>
+
+				<% @emails.each do |email| %> 
+
+					<tr>
+						<% if email.read == true %> 
+						<td id="object_<%= email.id %>" class="read" ><%= link_to email.object, email_path(email), remote: true %></td>
+						<% else %>
+						<td id="object_<%= email.id %>" class="ur" ><%= link_to email.object, email_path(email), remote: true %></td>
+						<% end %>
+
+					</tr>
+				<% end %>
+			</table>
+
+		</div>
+
+		<div class="col-lg-6">
+			<table class="table table-striped">
+				<tr>
+
+					<th>content</th>
+
+				</tr>
+			</table>
+
+			<% @emails.each do |email| %> 
+
+					<div id="mail_<%= email.id %>" class="emailcontent" style="display: none;" >
+						<div class="row" id="box">
+							<h1><%= email.object %></h1><br>
+							<p><%= email.body %></p>
+						
+							<%= link_to email, remote: true, method: :delete, class: 'delete_email' , data: { confirm: 'Are you sure?' } do %>
+  							<button>Delete!</button>
+							<% end %>
+
+						</div>
+					</div>
+				<% end %>
+			
+		</div>
+	</div>
+</div>
